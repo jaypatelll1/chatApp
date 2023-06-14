@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback } from "react-native";
 import React from "react";
+import Message from "../components/message";
 
 export default function home() {
   const [text, onChangeText] = React.useState("");
@@ -27,12 +28,8 @@ export default function home() {
           </View>
        </View>
 
-       <View style={styles.message}>
-          <Text style={styles.textmessage}>
-            Magna amet irure mollit est excepteur irure dolor eiusmod non tempor aute deserunt.
-          </Text>
-      </View>
-      
+      <Message/>
+      <Message/>
       
        <View style={styles.sendMessage}>
         <TextInput
@@ -57,31 +54,47 @@ const styles = StyleSheet.create({
     height:"100%"
   },
   topBar:{
-    marginTop: 40,
+    marginTop: "2%",
     flex:1,
     flexDirection:'row',
     backgroundColor: "#E9EEFF",
     borderRadius: 50,
-    maxHeight: 100,
+    maxHeight: 50,
     maxWidth: 380,
-    marginLeft: 5
+    marginLeft: 15,
   },
 
   textmessage:{
-    fontSize:18,
+    textAlign:"left",
+    fontSize:16,
+    margin:15
   },
 
-  message:{
+  senderMessage:{
     backgroundColor: "#E9EEFF",
-    marginLeft: 10,
+    marginHorizontal:10,
     borderBottomLeftRadius:45,
     borderTopLeftRadius:45,
     borderTopRightRadius:45,
-    marginRight: 10,
-    marginBottom: 50,
-    marginTop: "150%"
-  },
+    marginVertical:15,
+    position:"absolute",
+    width:"70%",
+    bottom:65,
+    right:0,
 
+  },
+  receiverMessage:{
+    backgroundColor: "#E9EEFF",
+    marginHorizontal:10,
+    borderBottomRightRadius:45,
+    borderTopLeftRadius:45,
+    borderTopRightRadius:45,
+    marginVertical:15,
+    position:"absolute",
+    width:"70%",
+    bottom:65,
+    left:0,
+  },
   topBarMid:{
     marginLeft: 8
   },
