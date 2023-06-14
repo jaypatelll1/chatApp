@@ -25,7 +25,11 @@ export default function home({ users, onUserPress }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchbar}>
+      <View style={styles.topBar}>
+      <Image
+          source={require("../assets/backButton.png")}
+          style={styles.image1}
+        />
         <TextInput
           style={styles.search}
           onChangeText={onChangeText}
@@ -33,7 +37,7 @@ export default function home({ users, onUserPress }) {
           placeholder="Search message..."
         />
        
-      </View>
+
       
       <TouchableOpacity onPress={handlePress} style={styles.button}>
         <Image
@@ -41,10 +45,8 @@ export default function home({ users, onUserPress }) {
           style={styles.image}
         />
       </TouchableOpacity>
-       <Image
-          source={require("../assets/backButton.png")}
-          style={styles.image1}
-        />
+
+        </View>
         <FlatList
       data={users}
       renderItem={renderItem}
@@ -55,29 +57,30 @@ export default function home({ users, onUserPress }) {
 }
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 30,
   },
   search: {
     height: 50,
     width: 300,
-    marginLeft: 35,
+
     padding: 10,
     borderRadius: 50,
     backgroundColor: "#D9D9D9",
   },
-  searchbar: {
 
-  },
   image: {
     height: 26,
     width: 26,
-    marginLeft: 350,
-    marginTop: -35,
+
   },
   image1: {
     width: 30,
     height: 30,
-    marginRight: 10,
-    marginTop: -38,
+
   },
+  topBar:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    alignItems:"center"
+  }
 });
