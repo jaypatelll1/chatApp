@@ -34,7 +34,7 @@ export default function home() {
             // marginTop:"40%",
             position: "absolute",
             top: 300,
-            left: 135,
+            left: "40%",
           }}
         ></View>
       </View>
@@ -44,6 +44,7 @@ export default function home() {
             color: "#4876BC",
             fontWeight: "bold",
             fontSize: 40,
+      
           }}
         >
           ChatApp
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#9DB2FD",
     padding: 10,
-
     width: "60%",
     margin: 12,
     borderRadius: 50,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position:"absolute",
     top:400,
-    left:18
+    left:"8%"
   },
   mainImg: {
     height: "90%",
