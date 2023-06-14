@@ -18,6 +18,25 @@ export default function home() {
   };
   return (
     <View style={styles.container}>
+      {/* <View>
+      <Image source={require('../assets/main.jpg')}/>
+      </View> */}
+      <View style={styles.centerText}>
+        <Text style={{
+                color:"#4876BC",
+                fontWeight:"bold",
+                fontSize:40,
+        }}>ChatApp</Text>
+
+        <Text style={{
+            color:"#4876BC",
+            fontSize:12,
+            fontWeight:"bold",
+            marginTop:"2%"
+        }}>
+        Connect, Chat, and Share Moments - Your Personal Chat Hub!
+        </Text>
+      </View>  
       <View style={styles.buttons}>
        <TouchableOpacity style={styles.button}>
         <Text style={styles.text}>Login</Text>
@@ -38,17 +57,25 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:"flex-end",
     alignItems:"center",
-    marginBottom:50
+    marginBottom:60
   },
   button:{
     backgroundColor:"#9DB2FD",
     padding:10,
+
     width:"60%",
-    margin:20,
+    margin:12,
     borderRadius:50
   },
   text:{
     color:"#4876BC",
     textAlign:"center"
+  },
+  centerText:{
+    flex:1,
+    marginTop:"75%",
+    flexDirection:"column",
+    justifyContent:"center",
+    alignItems:"center"
   }
 });
