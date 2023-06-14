@@ -11,9 +11,11 @@ export default function home() {
     <>
     <View style={styles.container}>
        <View style={styles.topBar}>
+       <TouchableOpacity onPress={handlePress} style={styles.button}>
           <Image source={require('../assets/backButton.png')} style={styles.image} />
+          </TouchableOpacity>
           <View style={styles.topBarMid}>
-            <View style={styles.dp}></View>
+            <Image source={require('../assets/profile-photo.jpg')} style={styles.image} />
             <View style={styles.info}>
               <Text style={styles.text}>Dev Pandhi</Text>
             </View>
@@ -25,6 +27,11 @@ export default function home() {
           </View>
        </View>
 
+       <View style={styles.message}>
+          <Text style={styles.textmessage}>
+            Magna amet irure mollit est excepteur irure dolor eiusmod non tempor aute deserunt.
+          </Text>
+      </View>
       
       
        <View style={styles.sendMessage}>
@@ -36,11 +43,10 @@ export default function home() {
         />
        <Image source={require('../assets/send.png')} style={styles.send}/>
       </View>
+
+      
        
     </View>
-
-
-
 </>
     
   );
@@ -51,10 +57,31 @@ const styles = StyleSheet.create({
     height:"100%"
   },
   topBar:{
-    marginTop: 30,
+    marginTop: 40,
     flex:1,
     flexDirection:'row',
+    backgroundColor: "#E9EEFF",
+    borderRadius: 50,
+    maxHeight: 100,
+    maxWidth: 380,
+    marginLeft: 5
   },
+
+  textmessage:{
+    fontSize:18,
+  },
+
+  message:{
+    backgroundColor: "#E9EEFF",
+    marginLeft: 10,
+    borderBottomLeftRadius:45,
+    borderTopLeftRadius:45,
+    borderTopRightRadius:45,
+    marginRight: 10,
+    marginBottom: 50,
+    marginTop: "150%"
+  },
+
   topBarMid:{
     marginLeft: 8
   },
@@ -81,6 +108,7 @@ const styles = StyleSheet.create({
     maxWidth:30,
     margin:10,
     //padding:10
+    borderRadius:10
   },
   info:{
     //backgroundColor:"red",
@@ -94,7 +122,7 @@ const styles = StyleSheet.create({
   text:{
     marginTop:-25,
     color:"blue",
-    fontSize: 20,
+    fontSize: 19,
     color: '#2f354b',
     textAlign: 'center'
   },
