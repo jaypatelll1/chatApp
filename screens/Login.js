@@ -15,8 +15,7 @@ export default function Login() {
   return (
     <View>
       <ScrollView
-       showsHorizontalScrollIndicator={false} 
-       horizontal>
+       showsVerticalScrollIndicator={false}>
         <View>
           <Image
             source={require("../assets/login.jpg")}
