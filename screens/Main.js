@@ -38,13 +38,14 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:"flex-end",
     alignItems:"center",
-    marginBottom:50
+    marginBottom:60
   },
   button:{
     backgroundColor:"#9DB2FD",
     padding:10,
+
     width:"60%",
-    margin:20,
+    margin:12,
     borderRadius:50
   },
   text:{

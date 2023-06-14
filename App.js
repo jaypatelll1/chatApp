@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
-import Home from './screens/Home';
+// import Home from './screens/Home';
 import ChatScreen from './screens/ChatScreen';
+import MainScreen from "./screens/Main"
 export default function App() {
   const users = [
     {
@@ -27,7 +28,8 @@ export default function App() {
 
   return (
     <View>
-      <Home users={users} onUserPress={handleUserPress}/>
+      {/* <Home users={users} onUserPress={handleUserPress}/> */}
+      <MainScreen/>
     </View>
   );
 }
