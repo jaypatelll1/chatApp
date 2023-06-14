@@ -140,5 +140,6 @@ const styles = StyleSheet.create({
   bottombuttontext: {
     color: "#647FDE",
     fontWeight: "bold",
+    
   },
 });

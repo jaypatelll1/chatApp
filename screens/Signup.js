@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
   bottomtext: {
     color: "#9DB2FD",
     fontWeight: "bold",
+    
   },
 
   bottombuttontext: {
