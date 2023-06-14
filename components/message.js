@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+const myId='u1';
+const message = ({msg}) => {
 
-const message = () => {
-
-    const isMe = true;
+   const isMe = msg.user.id===myId;
 
   return (
-    <View style={styles.senderMessage}>
+    <View style={isMe?styles.senderMessage:styles.receiverMessage}>
           <Text style={styles.textmessage}>
-            Magna amet irure mollit est excepteur irure dolor eiusmod non tempor aute deserunt.
+           {msg.content}
           </Text>
       </View>
   );
@@ -22,29 +22,27 @@ const styles = StyleSheet.create({
       },
     
       senderMessage:{
-        backgroundColor: "#E9EEFF",
+        backgroundColor: "#118FFFFF",
         marginHorizontal:10,
         borderBottomLeftRadius:45,
         borderTopLeftRadius:45,
         borderTopRightRadius:45,
-        marginVertical:15,
-        position:"absolute",
-        width:"70%",
-        bottom:65,
-        right:0,
+        marginVertical:3,
+        marginLeft:'auto',
+        maxWidth:"70%",
+ 
     
       },
       receiverMessage:{
-        backgroundColor: "#E9EEFF",
+        backgroundColor: "#DD99FF",
         marginHorizontal:10,
         borderBottomRightRadius:45,
         borderTopLeftRadius:45,
         borderTopRightRadius:45,
-        marginVertical:15,
-        position:"absolute",
-        width:"70%",
-        bottom:65,
-        left:0,
+        marginVertical:3,
+        marginLeft:10,
+        maxWidth:"70%",
+
       },
 })
 
