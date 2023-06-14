@@ -13,7 +13,9 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   return (
     <View>
-      <ScrollView>
+      <ScrollView 
+      showsHorizontalScrollIndicator={false}
+       horizontal>
       <Image
         source={require("../assets/signup.jpg")}
         style={styles.signupimg}

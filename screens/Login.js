@@ -14,64 +14,66 @@ export default function Login() {
   const [password, setPassword] = useState("");
   return (
     <View>
-       <ScrollView>
-      <View>
-        <Image
-          source={require("../assets/login.jpg")}
-          style={styles.loginimg}
-        />
-      </View>
-      <View style={styles.centerText}>
-        <Text
-          style={{
-            color: "#4876BC",
-            fontWeight: "bold",
-            fontSize: 40,
-          }}
-        >
-          ChatApp
-        </Text>
+      <ScrollView
+       showsHorizontalScrollIndicator={false} 
+       horizontal>
+        <View>
+          <Image
+            source={require("../assets/login.jpg")}
+            style={styles.loginimg}
+          />
+        </View>
+        <View style={styles.centerText}>
+          <Text
+            style={{
+              color: "#4876BC",
+              fontWeight: "bold",
+              fontSize: 40,
+            }}
+          >
+            ChatApp
+          </Text>
 
-        <Text
-          style={{
-            color: "#4876BC",
-            fontSize: 12,
-            fontWeight: "bold",
-            marginTop: "2%",
-          }}
-        >
-          Connect, Chat, and Share Moments - Your Personal Chat Hub!
-        </Text>
-      </View>
-      <View style={styles.textbox}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#647FDE"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#647FDE"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.text}>Login</Text>
-        </TouchableOpacity>
-      </View>
+          <Text
+            style={{
+              color: "#4876BC",
+              fontSize: 12,
+              fontWeight: "bold",
+              marginTop: "2%",
+            }}
+          >
+            Connect, Chat, and Share Moments - Your Personal Chat Hub!
+          </Text>
+        </View>
+        <View style={styles.textbox}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#647FDE"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#647FDE"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Login</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.signup}>
-        <Text style={styles.bottomtext}>new here?</Text>
-        <TouchableOpacity>
-          <Text style={styles.bottombuttontext}> SignUp</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.signup}>
+          <Text style={styles.bottomtext}>new here?</Text>
+          <TouchableOpacity>
+            <Text style={styles.bottombuttontext}> SignUp</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -143,6 +145,5 @@ const styles = StyleSheet.create({
   bottombuttontext: {
     color: "#647FDE",
     fontWeight: "bold",
-    
   },
 });
