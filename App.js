@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <View>
-      <ChatScreen/>
+      <Home users={users} onUserPress={handleUserPress}/>
     </View>
   );
 }
