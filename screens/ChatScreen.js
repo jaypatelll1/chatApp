@@ -27,19 +27,19 @@ export default function home() {
 
       
       
-       
-    </View>
-
-
-      <View style={styles.sendMessage}>
+       <View style={styles.sendMessage}>
         <TextInput
           style={styles.search}
           onChangeText={onChangeText}
           value={text}
           placeholder="Type a message..."
         />
-       <Image source={require('../assets/send.png')}/>
+       <Image source={require('../assets/send.png')} style={styles.send}/>
       </View>
+       
+    </View>
+
+
 
 </>
     
@@ -48,6 +48,7 @@ export default function home() {
 const styles = StyleSheet.create({
   container: {
     //marginTop: 50,
+    height:"100%"
   },
   topBar:{
     marginTop: 30,
@@ -70,11 +71,10 @@ const styles = StyleSheet.create({
   },
   search: {
     height: 50,
-    width: 350,
-    marginLeft: 20,
+    width: 380,
     padding: 10,
     borderRadius: 50,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#E9E9E9",
   },
   image:{
     maxHeight:30,
@@ -100,7 +100,18 @@ const styles = StyleSheet.create({
   },
 
   sendMessage:{
-    marginTop: "175%",
+    flex:1,
+    flexDirection:"column-reverse",
+    justifyContent:"space-between",
+    alignItems:"center",
+    marginBottom:10
+  },
+  send:{
+    maxHeight:20,
+    maxWidth:20,
+    position:"absolute",
+    right:30,
+    bottom:15
   }
 
 });
