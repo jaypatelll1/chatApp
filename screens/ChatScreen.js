@@ -8,6 +8,7 @@ export default function home() {
     console.log('Button pressed');
   };
   return (
+    <>
     <View style={styles.container}>
        <View style={styles.topBar}>
           <Image source={require('../assets/backButton.png')} style={styles.image} />
@@ -23,8 +24,25 @@ export default function home() {
             <Image source={require('../assets/Phone.png')} style={styles.image} />
           </View>
        </View>
+
+      
+      
        
     </View>
+
+
+      <View style={styles.sendMessage}>
+        <TextInput
+          style={styles.search}
+          onChangeText={onChangeText}
+          value={text}
+          placeholder="Type a message..."
+        />
+       <Image source={require('../assets/send.png')}/>
+      </View>
+
+</>
+    
   );
 }
 const styles = StyleSheet.create({
@@ -52,7 +70,7 @@ const styles = StyleSheet.create({
   },
   search: {
     height: 50,
-    width: 300,
+    width: 350,
     marginLeft: 20,
     padding: 10,
     borderRadius: 50,
@@ -80,5 +98,9 @@ const styles = StyleSheet.create({
     color: '#2f354b',
     textAlign: 'center'
   },
+
+  sendMessage:{
+    marginTop: "175%",
+  }
 
 });
