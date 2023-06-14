@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -13,6 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   return (
     <View>
+       <ScrollView>
       <View>
         <Image
           source={require("../assets/login.jpg")}
@@ -70,6 +72,7 @@ export default function Login() {
           <Text style={styles.bottombuttontext}> SignUp</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     </View>
   );
 }

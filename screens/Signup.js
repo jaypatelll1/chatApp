@@ -13,6 +13,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   return (
     <View>
+      <ScrollView>
       <Image
         source={require("../assets/signup.jpg")}
         style={styles.signupimg}
@@ -67,6 +68,7 @@ export default function Signup() {
           <Text style={styles.bottombuttontext}> Login</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     </View>
   );
 }
