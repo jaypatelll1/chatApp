@@ -5,6 +5,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -14,8 +15,7 @@ export default function Signup() {
   return (
     <View>
       <ScrollView 
-      showsHorizontalScrollIndicator={false}
-       horizontal>
+      showsVerticalScrollIndicator={false}>
       <Image
         source={require("../assets/signup.jpg")}
         style={styles.signupimg}
