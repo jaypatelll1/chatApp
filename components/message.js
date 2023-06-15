@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius:45,
         borderTopRightRadius:45,
         marginVertical:3,
-        marginLeft:10,
+        marginRight: "auto",
         maxWidth:"70%",
 
       },
