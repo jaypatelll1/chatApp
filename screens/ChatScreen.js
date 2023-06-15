@@ -1,8 +1,10 @@
+<<<<<<< HEAD
 import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback, FlatList,SafeAreaView } from "react-native";
+=======
+import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback } from "react-native";
+>>>>>>> 8f8ba5077104bbc3da558cc0d2899512f3e6fa41
 import React from "react";
 import Message from "../components/message";
-import Chats from "../assets/dummyData";
-
 
 export default function home() {
   const [text, onChangeText] = React.useState("");
@@ -30,13 +32,9 @@ export default function home() {
           </View>
        </View>
 
-
-      <View style={{marginVertical:15}}>
-      <FlatList
-        data={Chats.messages}
-        renderItem={({item})=><Message msg={item}/>}
-       />
-      </View>
+      <Message/>
+      <Message/>
+      
        <View style={styles.sendMessage}>
         <TextInput
           style={styles.search}
@@ -62,8 +60,12 @@ const styles = StyleSheet.create({
   topBar:{
     flex:1,
     flexDirection:'row',
+<<<<<<< HEAD
     backgroundColor: "#118FFFFF",
   
+=======
+    backgroundColor: "#E9EEFF",
+>>>>>>> 8f8ba5077104bbc3da558cc0d2899512f3e6fa41
     borderRadius: 50,
     maxHeight: 50,
     maxWidth: 380,
