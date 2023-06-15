@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 // import Home from './screens/Home';
 import ChatScreen from './screens/ChatScreen';
-import MainScreen from "./screens/Main"
+import MainScreen from "./screens/Main";
+import Login from './screens/Login';
+
 export default function App() {
   const users = [
     {
@@ -28,8 +31,10 @@ export default function App() {
 
   return (
     <View>
+      <NavigationContainer></NavigationContainer>
       {/* <Home users={users} onUserPress={handleUserPress}/> */}
-      <ChatScreen/>
+      {/* <ChatScreen/> */}
+      {/* <Login/> */}
     </View>
   );
 }

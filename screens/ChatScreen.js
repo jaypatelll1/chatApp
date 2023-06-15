@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback, FlatList } from "react-native";
+import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback, FlatList,SafeAreaView } from "react-native";
 import React from "react";
 import Message from "../components/message";
 import Chats from "../assets/dummyData";
@@ -12,7 +12,7 @@ export default function home() {
   };
   return (
     <>
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
        <View style={styles.topBar}>
        <TouchableOpacity onPress={handlePress} style={styles.button}>
           <Image source={require('../assets/backButton.png')} style={styles.image} />
@@ -49,7 +49,7 @@ export default function home() {
 
       
        
-    </View>
+    </SafeAreaView>
 </>
     
   );
@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
     height:"100%"
   },
   topBar:{
-    marginTop: "2%",
     flex:1,
     flexDirection:'row',
     backgroundColor: "#118FFFFF",
+  
     borderRadius: 50,
     maxHeight: 50,
     maxWidth: 380,
