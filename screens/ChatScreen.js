@@ -1,10 +1,8 @@
-<<<<<<< HEAD
-import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback, FlatList,SafeAreaView } from "react-native";
-=======
-import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback } from "react-native";
->>>>>>> 8f8ba5077104bbc3da558cc0d2899512f3e6fa41
+import { View, Text, StyleSheet, TextInput,TouchableOpacity,Image, TouchableWithoutFeedback, FlatList } from "react-native";
 import React from "react";
 import Message from "../components/message";
+import Chats from "../assets/dummyData";
+
 
 export default function home() {
   const [text, onChangeText] = React.useState("");
@@ -14,7 +12,7 @@ export default function home() {
   };
   return (
     <>
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
        <View style={styles.topBar}>
        <TouchableOpacity onPress={handlePress} style={styles.button}>
           <Image source={require('../assets/backButton.png')} style={styles.image} />
@@ -32,9 +30,13 @@ export default function home() {
           </View>
        </View>
 
-      <Message/>
-      <Message/>
-      
+
+      <View style={{marginVertical:15}}>
+      <FlatList
+        data={Chats.messages}
+        renderItem={({item})=><Message msg={item}/>}
+       />
+      </View>
        <View style={styles.sendMessage}>
         <TextInput
           style={styles.search}
@@ -47,7 +49,7 @@ export default function home() {
 
       
        
-    </SafeAreaView>
+    </View>
 </>
     
   );
@@ -58,14 +60,10 @@ const styles = StyleSheet.create({
     height:"100%"
   },
   topBar:{
+    marginTop: "2%",
     flex:1,
     flexDirection:'row',
-<<<<<<< HEAD
     backgroundColor: "#118FFFFF",
-  
-=======
-    backgroundColor: "#E9EEFF",
->>>>>>> 8f8ba5077104bbc3da558cc0d2899512f3e6fa41
     borderRadius: 50,
     maxHeight: 50,
     maxWidth: 380,

@@ -33,11 +33,9 @@ export default function App() {
     <View>
       <NavigationContainer></NavigationContainer>
       {/* <Home users={users} onUserPress={handleUserPress}/> */}
-      {/* <ChatScreen/> */}
+      <ChatScreen/>
       {/* <Login/> */}
     </View>
   );
 }
 
-
- 
