@@ -1,77 +1,72 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  FlatList,
-} from "react-native";
-import React from "react";
-import User from "../components/user";
+import React from 'react';
+import { View,FlatList, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function home({ users, onUserPress }) {
-  const [text, onChangeText] = React.useState("");
-  const handlePress = () => {
-    // Handle button press here
-    console.log("Button pressed");
+const Home = () => {
+  const navigation = useNavigation();
+  const users = [
+    {
+      id: 1,
+      username: 'User1',
+      avatar: require('../assets/avatar1.png'),
+      lastMessage: 'Hello there!',
+    },
+    {
+      id: 2,
+      username: 'User2',
+      avatar: require('../assets/avatar2.png'),
+      lastMessage: 'How are you doing?',
+    },
+    // Add more users as needed
+  ];
+
+  const handleUserPress = (user) => {
+    // Handle user press and navigate to chat screen
+    navigation.navigate('ChatScreen', { user });
   };
+
   const renderItem = ({ item }) => {
-    return <User user={item} onPress={() => onUserPress(item)} />;
+    return (
+      <TouchableOpacity onPress={() => handleUserPress(item)} style={styles.itemContainer}>
+        <Image source={item.avatar} style={styles.avatar} />
+        <View>
+          <Text style={styles.username}>{item.username}</Text>
+          <Text style={styles.lastMessage}>{item.lastMessage}</Text>
+        </View>
+      </TouchableOpacity>
+    );
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
-        <Image
-          source={require("../assets/backButton.png")}
-          style={styles.image1}
-        />
-        <TextInput
-          style={styles.search}
-          onChangeText={onChangeText}
-          value={text}
-          placeholder="Search message..."
-        />
-
-        <TouchableOpacity onPress={handlePress} style={styles.button}>
-          <Image
-            source={require("../assets/setting-icon.png")}
-            style={styles.image}
-          />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        data={users}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
+    <FlatList
+      data={users}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id.toString()}
+    />
   );
-}
+};
+
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 40,
-  },
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginBottom:5
-  },
-  search: {
-    height: 50,
-    width: 300,
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    borderRadius: 50,
-    backgroundColor: "#D9D9D9",
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
   },
-  image: {
-    height: 26,
-    width: 26,
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
   },
-  image1: {
-    width: 30,
-    height: 30,
+  username: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  lastMessage: {
+    color: 'gray',
   },
 });
+
+export default Home;
