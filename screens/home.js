@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,FlatList, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import { View,FlatList, TouchableOpacity, Image, Text, StyleSheet,SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
@@ -27,6 +27,7 @@ const Home = () => {
 
   const renderItem = ({ item }) => {
     return (
+     
       <TouchableOpacity onPress={() => handleUserPress(item)} style={styles.itemContainer}>
         <Image source={item.avatar} style={styles.avatar} />
         <View>
@@ -34,6 +35,7 @@ const Home = () => {
           <Text style={styles.lastMessage}>{item.lastMessage}</Text>
         </View>
       </TouchableOpacity>
+     
     );
   };
 
