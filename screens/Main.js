@@ -9,12 +9,16 @@ import {
   Button,
 } from "react-native";
 import React from "react";
+import { useNavigation } from '@react-navigation/native';
 
-export default function home() {
-  const [text, onChangeText] = React.useState("");
-  const handlePress = () => {
-    // Handle button press here
-    console.log("Button pressed");
+
+export default function Main({}) {
+  const navigation = useNavigation();
+  const handleLogin = () => {
+    navigation.navigate('Login');
+  };
+  const handleSignup = () => {
+    navigation.navigate('Signup');
   };
   return (
     <View style={styles.container}>
@@ -62,10 +66,10 @@ export default function home() {
         </Text>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.text}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSignup}>
           <Text style={styles.text}>Sign Up</Text>
         </TouchableOpacity>
       </View>
