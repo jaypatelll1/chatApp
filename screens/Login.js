@@ -8,10 +8,16 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function Login() {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleSignup = () => {
+    navigation.navigate('Signup');
+  };
   return (
     <View>
       <ScrollView
@@ -69,7 +75,7 @@ export default function Login() {
 
         <View style={styles.signup}>
           <Text style={styles.bottomtext}>new here?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleSignup}>
             <Text style={styles.bottombuttontext}> SignUp</Text>
           </TouchableOpacity>
         </View>
@@ -119,13 +125,13 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "50%",
     margin: 12,
-    marginTop: 30,
+    marginTop: 10,
     borderRadius: 50,
   },
   text: {
     color: "#4876BC",
     textAlign: "center",
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: "bold",
   },
   signup: {
@@ -133,7 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    marginTop: 20,
   },
 
   bottomtext: {
