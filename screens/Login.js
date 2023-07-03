@@ -68,7 +68,12 @@ export default function Login() {
           />
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button} onPress={()=>{login()}}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              // login(email, password);
+            }}
+          >
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
         </View>
