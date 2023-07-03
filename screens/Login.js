@@ -7,21 +7,21 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
-
+import React, { useState, useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
   const navigation = useNavigation();
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSignup = () => {
-    navigation.navigate('Signup');
+    navigation.navigate("Signup");
   };
   return (
     <View>
-      <ScrollView
-       showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Image
             source={require("../assets/login.jpg")}
@@ -68,7 +68,7 @@ export default function Login() {
           />
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={()=>{login()}}>
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
         </View>

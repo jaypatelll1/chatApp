@@ -1,20 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { View, StyleSheet,StatusBar } from "react-native";
-import AuthStack from "./Navigation/AuthStack";
-import AppStack from "./Navigation/AppStack";
-
+import { AuthProvider } from "./context/AuthContext";
+import AppNav from "./Navigation/AppNav";
+import React from "react";
 export default function App() {
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <AuthStack/>
-      </NavigationContainer>
-     </View>
+    <AuthProvider>
+      <AppNav />
+    </AuthProvider>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight,
-  },
-});
