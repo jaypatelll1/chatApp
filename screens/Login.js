@@ -71,7 +71,7 @@ export default function Login() {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              // login(email, password);
+              login(email, password);
             }}
           >
             <Text style={styles.text}>Login</Text>

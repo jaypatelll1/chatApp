@@ -10,11 +10,11 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-  const login = () => {
+  const login = (email,password) => {
     setisLoading(true);
     axios
       .post(`${BASE_URL}/`, {
-        username,
+        email,
         password,
       })
       .then((res) => {
@@ -22,14 +22,14 @@ export const AuthProvider = ({ children }) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
 
-        setUserToken(""); //after mihir is done with base url (json object))
-        AsyncStorage.setItem("userToken", ""); //token from backend goes here
+        setUserToken('2'); //after mihir is done with base url (json object))
+        AsyncStorage.setItem("userToken", '2'); //token from backend goes here
         AsyncStorage.setItem("userInfo"); //object goes here
       })
       .catch((e) => {
         console.log(e);
       });
-    setUserToken("2");
+   
 
     setisLoading(false);
   };
@@ -37,8 +37,9 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setisLoading(true);
     setUserToken(null);
-    AsyncStorage.removeItem("userToken");
     AsyncStorage.removeItem("userInfo");
+    AsyncStorage.removeItem("userToken");
+  
     setisLoading(false);
   };
 
@@ -52,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         setUserInfo(userInfo);
         setUserToken(userToken);
       }
-      setUserToken(userToken);
       setisLoading(false);
     } catch (e) {
       console.log(`pandhi noob ${e}`);
