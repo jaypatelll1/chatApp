@@ -12,7 +12,7 @@ export default function AboutUs() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Image
-            source={require("../assets/Aboutus.png")}
+            source={require("../assets/Aboutus.jpg")}
           />
         </View>
         <View style={styles.centerText}>
