@@ -69,7 +69,7 @@ const Home = () => {
 
         <TouchableOpacity style={styles.setting}>
           <Image
-            source={require("../assets/setting-icon.png")}
+            source={require("../assets/setting-icon.png")} 
             style={styles.settingimg}
           />
         </TouchableOpacity>
