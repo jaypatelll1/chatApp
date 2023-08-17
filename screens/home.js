@@ -15,7 +15,7 @@ const Home = () => {
   const navigation = useNavigation();
   const users = [
     {
-      id: 1,
+      id: 1, 
       username: "User1",
       avatar: require("../assets/avatar1.png"),
       lastMessage: "Hello there!",
