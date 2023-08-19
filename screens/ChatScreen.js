@@ -8,15 +8,34 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import {
+  Bubble,
+  GiftedChat,
+  Send,
+  InputToolbar,
+  Composer,
+} from "react-native-gifted-chat";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
+const CustomInputToolbar = (props) => {
+  return (
+    <InputToolbar
+      {...props}
+      containerStyle={{
+        // width: 1,
+        backgroundColor: "yellow",
+      }}
+    />
+  );
+};
+
 const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(true); // New state for typing indicator
 
   useEffect(() => {
     setMessages([
@@ -43,6 +62,14 @@ const ChatScreen = () => {
     ]);
   }, []);
 
+  const handleInputTextChanged = (text) => {
+    if (text.length > 0 && !isTyping) {
+      setIsTyping(true);
+    } else if (text.length === 0 && isTyping) {
+      setIsTyping(false);
+    }
+  };
+
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
@@ -52,15 +79,49 @@ const ChatScreen = () => {
   const renderSend = (props) => {
     return (
       <Send {...props}>
-        <View>
+        <View
+          style={{
+            zIndex: 0,
+          }}
+        >
           <MaterialCommunityIcons
             name="send-circle"
-            style={{ marginBottom: 5, marginRight: 5 }}
-            size={32}
+            style={{ marginBottom: 5, marginRight: 5, zIndex:0 }}
+            size={40}
             color="#2e64e5"
+        
           />
         </View>
       </Send>
+    );
+  };
+
+  const renderComposer = (props) => {
+    return (
+      <Composer
+        {...props}
+        textInputStyle={{
+          borderRadius: 20, // Making it round
+          paddingHorizontal: 16,
+          borderWidth: 1,
+          paddingVertical: 8,
+          backgroundColor: "red",
+                  
+        //  flexDirection: "row"
+          // Other custom styles as needed
+        }}
+
+        // renderSend={(sendProps) => (
+        //   <Send {...sendProps}>
+        //     <Composer
+        //       {...props}
+        //       textInputStyle={{ flex: 1 }} // Adjust flex to fit the button
+        //       composerHeight={40} // Adjust the height as needed
+        //     />
+
+        //   </Send>
+        // )}
+      />
     );
   };
 
@@ -106,7 +167,9 @@ const ChatScreen = () => {
         </View>
       </View>
       <GiftedChat
+        renderComposer={renderComposer}
         messages={messages}
+        onInputTextChanged={handleInputTextChanged} // Attach the event handler
         onSend={(messages) => onSend(messages)}
         user={{
           _id: 1,
@@ -116,6 +179,7 @@ const ChatScreen = () => {
         renderSend={renderSend}
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
+        renderInputToolbar={CustomInputToolbar}
       />
     </>
   );
