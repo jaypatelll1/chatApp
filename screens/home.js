@@ -15,7 +15,7 @@ const Home = () => {
   const navigation = useNavigation();
   const users = [
     {
-      id: 1,
+      id: 1, 
       username: "User1",
       avatar: require("../assets/avatar1.png"),
       lastMessage: "Hello there!",
@@ -53,7 +53,7 @@ const Home = () => {
     <View>
       <View style={styles.topbar}>
         <TouchableOpacity
-          style={{ position: "absolute", right: 80, top: 25, zIndex: 10 }}
+          style={{ position: "absolute", right: "16%", top: 25, zIndex: 10 }}
         >
           <Image
             source={require("../assets/search.png")}
@@ -64,12 +64,12 @@ const Home = () => {
           style={styles.searchBar}
           onChangeText={onSearchText}
           value={search}
-          placeholder="search message..."
+          placeholder="Search message..."
         />
 
         <TouchableOpacity style={styles.setting}>
           <Image
-            source={require("../assets/setting-icon.png")}
+            source={require("../assets/setting-icon.png")} 
             style={styles.settingimg}
           />
         </TouchableOpacity>
@@ -89,8 +89,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "lightgray",
+    borderWidth: 1,
+    borderColor: "lightgray",
+    borderRadius:35,
+    backgroundColor:"#E9EEFF",
+    marginHorizontal:"3%",
+    marginBottom:"5%"
   },
   avatar: {
     width: 50,
@@ -107,22 +111,24 @@ const styles = StyleSheet.create({
   },
   topbar: {
     flexDirection: "row",
+    width:"100%",
+    marginBottom:"3%"
   },
   searchBar: {
     height: 50,
-    width: 320,
+    width: "85%",
     margin: 12,
     backgroundColor: "#E9EEFF",
     padding: 10,
     borderRadius: 25,
   },
   setting: {
-    marginTop: 22,
-    marginLeft: 5,
+    marginTop: 23,
   },
   settingimg: {
-    height: 30,
-    width: 30,
+    height: 25,
+    width: 25,
+    right:4
   },
 });
 
