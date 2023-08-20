@@ -21,18 +21,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const CustomInputToolbar = (props) => {
-  return (
-    <InputToolbar
-      {...props}
-      containerStyle={{
-        // width: 1,
-        backgroundColor: "yellow",
-      }}
-    />
-  );
-};
-
 const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(true); // New state for typing indicator
@@ -41,7 +29,7 @@ const ChatScreen = () => {
     setMessages([
       {
         _id: 1,
-        text: "Hello developer",
+        text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -51,7 +39,7 @@ const ChatScreen = () => {
       },
       {
         _id: 2,
-        text: "Hello world",
+        text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         createdAt: new Date(),
         user: {
           _id: 1,
@@ -75,7 +63,9 @@ const ChatScreen = () => {
       GiftedChat.append(previousMessages, messages)
     );
   }, []);
-
+  const scrollToBottomComponent = () => {
+    return <FontAwesome name="angle-double-down" size={22} color="#333" />;
+  };
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -85,43 +75,13 @@ const ChatScreen = () => {
           }}
         >
           <MaterialCommunityIcons
-            name="send-circle"
-            style={{ marginBottom: 5, marginRight: 5, zIndex:0 }}
-            size={40}
-            color="#2e64e5"
-        
+            name="send"
+            style={{ marginLeft: -40, marginTop: 6 }}
+            size={30}
+            color="#000"
           />
         </View>
       </Send>
-    );
-  };
-
-  const renderComposer = (props) => {
-    return (
-      <Composer
-        {...props}
-        textInputStyle={{
-          borderRadius: 20, // Making it round
-          paddingHorizontal: 16,
-          borderWidth: 1,
-          paddingVertical: 8,
-          backgroundColor: "red",
-                  
-        //  flexDirection: "row"
-          // Other custom styles as needed
-        }}
-
-        // renderSend={(sendProps) => (
-        //   <Send {...sendProps}>
-        //     <Composer
-        //       {...props}
-        //       textInputStyle={{ flex: 1 }} // Adjust flex to fit the button
-        //       composerHeight={40} // Adjust the height as needed
-        //     />
-
-        //   </Send>
-        // )}
-      />
     );
   };
 
@@ -131,56 +91,79 @@ const ChatScreen = () => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#2e64e5",
+            backgroundColor: "#9DB2FD",
+            borderRadius: 50,
+            marginBottom: 5,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 5,
+            elevation: 4,
+            marginBottom: 5,
+          },
+          left: {
+            backgroundColor: "#E0E7FD",
+            borderRadius: 50,
+            marginBottom: 5,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.5,
+            shadowRadius: 5,
+            elevation: 4,
           },
         }}
         textStyle={{
           right: {
-            color: "#fff",
+            color: "#000",
+            padding: "3%",marginBottom:-5
+          },
+          left: {
+            color: "#000",
+            padding: "3%",
+            marginBottom:-5
+          },
+        }}
+        timeTextStyle={{
+          right: {
+            color: "#000",
+            paddingHorizontal: "8%",
+          },
+          left: {
+            color: "#000",
+            paddingHorizontal: "8%",
           },
         }}
       />
     );
   };
-
-  const scrollToBottomComponent = () => {
-    return <FontAwesome name="angle-double-down" size={22} color="#333" />;
+  const CustomInputToolbar = (props) => {
+    return (
+      <InputToolbar {...props} containerStyle={styles.customInputToolbar} />
+    );
+  };
+  const renderComposer = (props) => {
+    return <Composer {...props} textInputStyle={styles.customComposer} />;
   };
 
   return (
     <>
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.button}>
-          <Image
-            source={require("../assets/backButton.png")}
-            style={styles.image}
-          />
-        </TouchableOpacity>
-        <View style={styles.topBarMid}>
-          <Image
-            source={require("../assets/profile-photo.jpg")}
-            style={styles.image}
-          />
-          <View style={styles.info}>
-            <Text style={styles.text}>Dev Pandhi</Text>
-          </View>
-        </View>
+      <View style={[styles.container, { backgroundColor: "#FFFFFF" }]}>
+        <GiftedChat
+          renderComposer={renderComposer}
+          messages={messages}
+          onInputTextChanged={handleInputTextChanged} // Attach the event handler
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+          renderBubble={renderBubble}
+          alwaysShowSend
+          renderSend={renderSend}
+          scrollToBottom
+          scrollToBottomComponent={scrollToBottomComponent}
+          renderInputToolbar={CustomInputToolbar}
+        />
       </View>
-      <GiftedChat
-        renderComposer={renderComposer}
-        messages={messages}
-        onInputTextChanged={handleInputTextChanged} // Attach the event handler
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-        renderBubble={renderBubble}
-        alwaysShowSend
-        renderSend={renderSend}
-        scrollToBottom
-        scrollToBottomComponent={scrollToBottomComponent}
-        renderInputToolbar={CustomInputToolbar}
-      />
     </>
   );
 };
@@ -190,44 +173,21 @@ export default ChatScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  topBar: {
-    marginTop: 2,
+  customInputToolbar: {
     flex: 1,
+    width: "183%",
+    paddingHorizontal: 0,
+    borderTopWidth: 0,
+    backgroundColor: "transparent",
+    marginBottom: 7,
+  },
+  customComposer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     flexDirection: "row",
-    backgroundColor: "#5CA3ED",
-    borderRadius: 50,
-    maxHeight: 50,
-    maxWidth: 380,
-    marginHorizontal: windowWidth * 0.01,
-  },
-  topBarMid: {
-    marginLeft: 8,
-  },
-  image: {
-    maxHeight: 30,
-    maxWidth: 30,
-    margin: 10,
-    //padding:10
-    borderRadius: 10,
-  },
-  text: {
-    marginTop: -25,
-    color: "red",
-    fontSize: 19,
-    color: "#2f354b",
-    textAlign: "center",
-  },
-
-  info: {
-    //backgroundColor:"red",
-    flex: 1,
-    justifyContent: "center",
-    marginLeft: 60,
-    marginTop: -38,
-    maxHeight: 50,
-    padding: 20,
+    borderWidth: 0.1,
+    borderRadius: 20,
+    backgroundColor: "#ffffff",
   },
 });
