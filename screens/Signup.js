@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { auth } from "../firebase";
-
+import { createUserWithEmailAndPassword } from "firebase/auth";
 export default function Signup() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -19,13 +19,13 @@ export default function Signup() {
     navigation.navigate('Login');
   };
   const handleSignUp=()=>{
-    auth.createUserWithEmailAndPassword(email,password)
+    createUserWithEmailAndPassword(auth,email,password)
     .then(userCredentials=>{
       const user=userCredentials.user;
-      console.log(user.password);
+      console.log(user);
     })
     .catch(error=>{
-      alert(err.message);
+      alert(error.message);
     })
   }
   return (
@@ -76,7 +76,7 @@ export default function Signup() {
         />
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.text}>SignUp</Text>
         </TouchableOpacity>
       </View>

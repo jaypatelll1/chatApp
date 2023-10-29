@@ -26,7 +26,7 @@ export default function AppNav() {
     <View style={styles.container}>
       <NavigationContainer>
         {/* {userToken !== null ? <AppStack /> : <AuthStack />} */}
-        <AppStack/>
+        <AuthStack/>
       </NavigationContainer>
     </View>
   );
