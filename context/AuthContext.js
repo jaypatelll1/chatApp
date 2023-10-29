@@ -4,13 +4,13 @@ import axios from "axios";
 import { BASE_URL } from "../utils/config";
 
 export const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
   const [isLoading, setisLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-
+  
   const login = (email,password) => {
+    
     setisLoading(true);
     axios
       .post(`${BASE_URL}/`, {
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
 
-        setUserToken('2'); //after mihir is done with base url (json object))
+        setUserToken(); //after mihir is done with base url (json object))
         AsyncStorage.setItem("userToken", '2'); //token from backend goes here
         AsyncStorage.setItem("userInfo"); //object goes here
       })
@@ -61,11 +61,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     isLoggedIn();
+    console.log(userToken);
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, isLoading, userToken, userInfo }}
+      value={{ login, logout, isLoading, userToken, userInfo,setUserToken }}
     >
       {children}
     </AuthContext.Provider>

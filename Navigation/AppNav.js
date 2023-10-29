@@ -8,6 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function AppNav() {
   const { isLoading, userToken } = useContext(AuthContext);
+  console.log('Appnav: ',userToken);
   if (isLoading) {
     return (
       <View
@@ -22,11 +23,13 @@ export default function AppNav() {
       </View>
     );
   }
+  
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        {/* {userToken !== null ? <AppStack /> : <AuthStack />} */}
-        <AuthStack/>
+        {userToken !== null ? <AppStack /> : <AuthStack />}
+        
+        {/* <AuthStack/> */}
       </NavigationContainer>
     </View>
   );

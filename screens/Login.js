@@ -16,10 +16,10 @@ import { auth } from "../firebase";
 
 export default function Login() {
   const navigation = useNavigation();
-  const { login } = useContext(AuthContext);
+  const { userToken,setUserToken } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userToken,setUserToken]=useState("")
+  // const [userToken,setUserToken]=useState("")
   const handleSignup = () => {
     navigation.navigate("Signup");
   };
@@ -28,7 +28,7 @@ export default function Login() {
     .then((userCredential)=>{
       const user=userCredential.user;
       console.log("Successfully Logged In with ",user.stsTokenManager.accessToken);
-      
+      setUserToken(user.stsTokenManager.accessToken);
     })
     .catch(error=>console.log(error.message));
   }
