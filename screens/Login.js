@@ -10,15 +10,28 @@ import {
 import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+
 
 export default function Login() {
   const navigation = useNavigation();
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userToken,setUserToken]=useState("")
   const handleSignup = () => {
     navigation.navigate("Signup");
   };
+  const handleLogin=()=>{
+    signInWithEmailAndPassword(auth,email,password)
+    .then((userCredential)=>{
+      const user=userCredential.user;
+      console.log("Successfully Logged In with ",user.stsTokenManager.accessToken);
+      
+    })
+    .catch(error=>console.log(error.message));
+  }
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -70,9 +83,7 @@ export default function Login() {
         <View style={styles.buttons}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              login(email, password);
-            }}
+            onPress={handleLogin}
           >
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
