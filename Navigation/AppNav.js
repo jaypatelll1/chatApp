@@ -8,7 +8,6 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function AppNav() {
   const { isLoading, userToken } = useContext(AuthContext);
-  console.log('Appnav: ',userToken);
   if (isLoading) {
     return (
       <View

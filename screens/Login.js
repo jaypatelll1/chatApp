@@ -16,22 +16,27 @@ import { auth } from "../firebase";
 
 export default function Login() {
   const navigation = useNavigation();
-  const { userToken,setUserToken } = useContext(AuthContext);
+  const { userToken, setUserToken ,setUserInfo } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [userToken,setUserToken]=useState("")
+
   const handleSignup = () => {
     navigation.navigate("Signup");
   };
-  const handleLogin=()=>{
-    signInWithEmailAndPassword(auth,email,password)
-    .then((userCredential)=>{
-      const user=userCredential.user;
-      console.log("Successfully Logged In with ",user.stsTokenManager.accessToken);
-      setUserToken(user.stsTokenManager.accessToken);
-    })
-    .catch(error=>console.log(error.message));
-  }
+
+
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+            console.log("User token stored in AsyncStorage");
+            setUserToken(user.stsTokenManager.accessToken);
+            setUserInfo(user)
+      })
+      .catch((error) => console.log(error.message));
+  };
+
+
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -81,10 +86,7 @@ export default function Login() {
           />
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLogin}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
         </View>
