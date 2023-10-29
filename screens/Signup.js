@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
+import { auth } from "../firebase";
 
 export default function Signup() {
   const navigation = useNavigation();
@@ -17,6 +18,16 @@ export default function Signup() {
   const handleLogin = () => {
     navigation.navigate('Login');
   };
+  const handleSignUp=()=>{
+    auth.createUserWithEmailAndPassword(email,password)
+    .then(userCredentials=>{
+      const user=userCredentials.user;
+      console.log(user.password);
+    })
+    .catch(error=>{
+      alert(err.message);
+    })
+  }
   return (
     <View>
       <ScrollView 
@@ -65,7 +76,7 @@ export default function Signup() {
         />
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.text}>SignUp</Text>
         </TouchableOpacity>
       </View>
