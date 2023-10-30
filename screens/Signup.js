@@ -9,23 +9,34 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
-import { auth } from "../firebase";
+import { auth,db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 export default function Signup() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName,setFullName]=useState("Jay");
+  
   const handleLogin = () => {
     navigation.navigate('Login');
   };
   const handleSignUp=()=>{
     createUserWithEmailAndPassword(auth,email,password)
     .then(userCredentials=>{
+      const data={
+        _id: userCredentials?.user.uid,
+        fullName: fullName,
+        providerData: userCredentials?.user.providerData[0]
+      }
+      setDoc(doc(db,'users',userCredentials?.user.uid),data)
+      .then(()=>{navigation.navigate('Login')})
       const user=userCredentials.user;
       console.log(user);
     })
     .catch(error=>{
       alert(error.message);
+      console.log(error.message);
     })
   }
   return (
@@ -158,5 +169,5 @@ const styles = StyleSheet.create({
   bottombuttontext: {
     color: "#647FDE",
     fontWeight: "bold",
-  },
+  },
 });

@@ -11,7 +11,8 @@ import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 
 export default function Login() {
@@ -28,10 +29,13 @@ export default function Login() {
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-            console.log("User token stored in AsyncStorage");
-            setUserToken(user.stsTokenManager.accessToken);
-            setUserInfo(user)
+          setUserToken(userCredential.user.stsTokenManager.accessToken);
+         if(userCredential){
+          getDoc(doc(db,'users',userCredential?.user.uid)).then((docSnap)=>
+          {
+            console.log(docSnap.data());
+          })
+         }
       })
       .catch((error) => console.log(error.message));
   };
