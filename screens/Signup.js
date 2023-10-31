@@ -47,29 +47,15 @@ export default function Signup() {
         source={require("../assets/signup.jpg")}
         style={styles.signupimg}
       />
-      <View style={styles.centerText}>
-        <Text
-          style={{
-            color: "#4876BC",
-            fontWeight: "bold",
-            fontSize: 40,
-          }}
-        >
-          ChatApp
-        </Text>
-
-        <Text
-          style={{
-            color: "#4876BC",
-            fontSize: 12,
-            fontWeight: "bold",
-            marginTop: "2%",
-          }}
-        >
-          Connect, Chat, and Share Moments - Your Personal Chat Hub!
-        </Text>
-      </View>
+      
       <View style={styles.textbox}>
+        <TextInput
+          style={styles.input}
+          placeholder="Full Name"
+          placeholderTextColor="#647FDE"
+          value={fullName}
+          onChangeText={setFullName}
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
