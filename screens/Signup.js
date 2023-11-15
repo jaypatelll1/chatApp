@@ -8,81 +8,99 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
-import { auth,db } from "../firebase";
+import { useNavigation } from "@react-navigation/native";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
+import { launchImageLibrary } from "react-native-image-picker";
+
 export default function Signup() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName,setFullName]=useState("Jay");
-  
+  const [fullName, setFullName] = useState("Jay");
+  const [pickerResponse, setPickerResponse] = useState(null);
   const handleLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
   };
-  const handleSignUp=()=>{
-    createUserWithEmailAndPassword(auth,email,password)
-    .then(userCredentials=>{
-      const data={
-        _id: userCredentials?.user.uid,
-        fullName: fullName,
-        providerData: userCredentials?.user.providerData[0]
-      }
-      setDoc(doc(db,'users',userCredentials?.user.uid),data)
-      .then(()=>{navigation.navigate('Login')})
-      const user=userCredentials.user;
-      console.log(user);
-    })
-    .catch(error=>{
-      alert(error.message);
-      console.log(error.message);
-    })
-  }
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const data = {
+          _id: userCredentials?.user.uid,
+          fullName: fullName,
+          providerData: userCredentials?.user.providerData[0],
+        };
+        setDoc(doc(db, "users", userCredentials?.user.uid), data).then(() => {
+          navigation.navigate("Login");
+        });
+        const user = userCredentials.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        alert(error.message);
+        console.log(error.message);
+      });
+  };
   return (
     <View>
-      <ScrollView 
-      showsVerticalScrollIndicator={false}>
-      <Image
-        source={require("../assets/signup.jpg")}
-        style={styles.signupimg}
-      />
-      
-      <View style={styles.textbox}>
-        <TextInput
-          style={styles.input}
-          placeholder="Full Name"
-          placeholderTextColor="#647FDE"
-          value={fullName}
-          onChangeText={setFullName}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Image
+          source={require("../assets/signup.jpg")}
+          style={styles.signupimg}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#647FDE"
-          value={email}
-          onChangeText={setEmail}
+        <TouchableOpacity
+          style={{
+            width: 80,
+            height: 80,
+            backgroundColor: "#647FDE",
+            borderRadius: 50,
+            // marginTop:"40%",
+            // position: "absolute",
+            // top: 300,
+            marginTop:5,
+            left: "40%",
+          }}
+          onPress={async () => {
+            const result = await launchCamera(options,setPickerResponse);
+            console.log("Image Avatar Pressed");
+          }}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#647FDE"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.text}>SignUp</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.login}>
-        <Text style={styles.bottomtext}>Already a user?</Text>
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.bottombuttontext}> Login</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.textbox}>
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            placeholderTextColor="#647FDE"
+            value={fullName}
+            onChangeText={setFullName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#647FDE"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#647FDE"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+            <Text style={styles.text}>SignUp</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.login}>
+          <Text style={styles.bottomtext}>Already a user?</Text>
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.bottombuttontext}> Login</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -91,7 +109,7 @@ export default function Signup() {
 const styles = StyleSheet.create({
   signupimg: {
     marginTop: 0,
-    height: 400,
+    height: 350,
     width: 400,
   },
   centerText: {
@@ -107,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    marginTop: 40,
+    marginTop: 20,
   },
   input: {
     width: "80%",
@@ -149,11 +167,10 @@ const styles = StyleSheet.create({
   bottomtext: {
     color: "#9DB2FD",
     fontWeight: "bold",
-    
   },
 
   bottombuttontext: {
     color: "#647FDE",
     fontWeight: "bold",
-  },
+  },
 });
