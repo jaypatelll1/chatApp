@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, } from "react";
 import {
   View,
   ScrollView,
@@ -21,7 +21,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const ChatScreen = () => {
+const ChatScreen = ({route}) => {
+  const { user } = route.params;
+  console.log(user);
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(true); // New state for typing indicator
 

@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect, useState } from 'react';
+
 import {
   View,
   FlatList,
@@ -7,27 +9,39 @@ import {
   Text,
   StyleSheet,
   TextInput,
+
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from "../firebase";
+
+const gettingdata = async () => {
+const querySnapshot = await getDocs(collection(db, 'users'));
+querySnapshot.forEach((doc) => {
+  console.log(doc.id, " => ", doc.data());
+});
+}
 
 const Home = () => {
-  const [search, onSearchText] = React.useState();
+  const [search, onSearchText] = useState();
+  const [users, setUsers] = useState([]);
   const navigation = useNavigation();
-  const users = [
-    {
-      id: 1, 
-      username: "User1",
-      avatar: require("../assets/avatar1.png"),
-      lastMessage: "Hello there!",
-    },
-    {
-      id: 2,
-      username: "User2",
-      avatar: require("../assets/avatar2.png"),
-      lastMessage: "How are you doing?",
-    },
-    // Add more users as needed
-  ];
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      const usersArray = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        username: doc.data().fullName,
+        avatar: doc.data().providerData.photoURL,
+        lastMessage: "", // You need to define where the lastMessage is coming from
+      }));
+      setUsers(usersArray);
+      
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleUserPress = (user) => {
     // Handle user press and navigate to chat screen
@@ -80,7 +94,9 @@ const Home = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
+       
     </View>
+    
   );
 };
 
