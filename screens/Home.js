@@ -81,19 +81,8 @@ const Home = () => {
         <TouchableOpacity style={styles.settingicon}>
           <Icon name="setting" color="black" size={30} />
         </TouchableOpacity>
-        <TextInput
-          style={styles.searchBar}
-          onChangeText={onSearchText}
-          value={search}
-          placeholder="Search message..."
-        />
-
-        <TouchableOpacity style={styles.setting}>
-          <Image
-            source={require("../assets/setting-icon.png")}
-            style={styles.settingimg}
-          />
-        </TouchableOpacity>
+       
+  
       </View>
 
       <FlatList

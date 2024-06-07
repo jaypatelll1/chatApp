@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useCallback, useRef, } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
-  ScrollView,
-  Text,
   Dimensions,
   StyleSheet,
-  TouchableOpacity,
-  Image,
 } from "react-native";
 import {
   Bubble,
@@ -17,12 +13,19 @@ import {
 } from "react-native-gifted-chat";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getRoomId } from "../utils/common";
-import { Timestamp, setDoc, doc, collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  Timestamp,
+  setDoc,
+  doc,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../firebase";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import { set } from "firebase/database";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -31,11 +34,9 @@ const ChatScreen = ({ route }) => {
   const userInfo = useSelector((state) => state.auth.userInfo.providerData.uid);
   console.log("UID:", userInfo);
   const { user } = route.params;
-  // const textRef=useRef('');
   console.log("Second User: ", user.uid);
   const [messages, setMessages] = useState([]);
-  const [isTyping, setIsTyping] = useState(true); // New state for typing indicator
-
+  const [isTyping, setIsTyping] = useState(false);
 
   const createRoomIfNotExists = async () => {
     let roomId = getRoomId(userInfo, user.uid);
@@ -43,26 +44,30 @@ const ChatScreen = ({ route }) => {
     await setDoc(doc(db, "rooms", roomId), {
       roomId,
       createdAt: Timestamp.fromDate(new Date()),
+    });
+  };
 
-    })
-  }
   useEffect(() => {
     createRoomIfNotExists();
-    send(messages);
-    let roomId =getRoomId(userInfo, user.uid);
-    const docRef = doc(db, 'rooms', roomId);
-    const messagesRef = collection(docRef, 'messages');
-    const q=query(messagesRef,orderBy('createdAt','asc'));
-    let unsub=onSnapshot(q,(querySnapshot)=>{
-      let allMessages=querySnapshot.docs.map((doc)=>{
-        console.log(doc.data());
-        return doc.data();
-      })
+    let roomId = getRoomId(userInfo, user.uid);
+    const docRef = doc(db, "rooms", roomId);
+    const messagesRef = collection(docRef, "messages");
+    const q = query(messagesRef, orderBy("createdAt", "desc"));
+    let unsub = onSnapshot(q, (querySnapshot) => {
+      let allMessages = querySnapshot.docs.map((doc) => {
+        let data = doc.data();
+        return {
+          _id: doc.id,
+          text: data.text,
+          createdAt: data.createdAt.toDate(),
+          user: {
+            _id: data.userId,
+          },
+        };
+      });
       setMessages(allMessages);
-    })
+    });
     return unsub;
-    
-    
   }, []);
 
   const handleInputTextChanged = (text) => {
@@ -72,32 +77,36 @@ const ChatScreen = ({ route }) => {
       setIsTyping(false);
     }
   };
+
   const send = async (messages) => {
     let message = messages[0].text.trim();
     if (!message) return;
     try {
       let roomId = getRoomId(userInfo, user.uid);
-      const docRef = doc(db, 'rooms', roomId);
-      const messagesRef = collection(docRef, 'messages');
+      const docRef = doc(db, "rooms", roomId);
+      const messagesRef = collection(docRef, "messages");
       const newDoc = await addDoc(messagesRef, {
         userId: userInfo,
         text: message,
-      }
-      )
+        createdAt: Timestamp.fromDate(new Date()),
+      });
       console.log("Document written with ID: ", newDoc.id);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
+
   const onSend = useCallback((messages = []) => {
-    
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
+    send(messages);
   }, []);
+
   const scrollToBottomComponent = () => {
     return <FontAwesome name="angle-double-down" size={22} color="#333" />;
   };
+
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -147,12 +156,13 @@ const ChatScreen = ({ route }) => {
         textStyle={{
           right: {
             color: "#000",
-            padding: "3%", marginBottom: -5
+            padding: "3%",
+            marginBottom: -5,
           },
           left: {
             color: "#000",
             padding: "3%",
-            marginBottom: -5
+            marginBottom: -5,
           },
         }}
         timeTextStyle={{
@@ -168,14 +178,17 @@ const ChatScreen = ({ route }) => {
       />
     );
   };
+
   const CustomInputToolbar = (props) => {
     return (
       <InputToolbar {...props} containerStyle={styles.customInputToolbar} />
     );
   };
+
   const renderComposer = (props) => {
     return <Composer {...props} textInputStyle={styles.customComposer} />;
   };
+
   console.log("Messages: ", messages);
   return (
     <>
@@ -183,10 +196,10 @@ const ChatScreen = ({ route }) => {
         <GiftedChat
           renderComposer={renderComposer}
           messages={messages}
-          onInputTextChanged={handleInputTextChanged} // Attach the event handler
+          onInputTextChanged={handleInputTextChanged}
           onSend={(messages) => onSend(messages)}
           user={{
-            _id: 1,
+            _id: userInfo,
           }}
           renderBubble={renderBubble}
           alwaysShowSend
