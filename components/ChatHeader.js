@@ -2,22 +2,22 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/Feather";
 
-const ChatHeader = () => {
+const ChatHeader = ({ user, onBackPress }) => {
   return (
     <View style={styles.container}>
       <View style={styles.icon}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onBackPress}>
           <Icon name="chevron-left" color="black" size={40} />
         </TouchableOpacity>
       </View>
       <View>
         <Image
-          source={require("../assets/profile-photo.jpg")}
+          source={{ uri: user.avatar }} 
           style={styles.profilephoto}
         />
       </View>
       <View style={styles.headerText}>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Anuj Pandey</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{user.username}</Text>
       </View>
     </View>
   );
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    marginLeft: 10,
     marginRight: 20,
+    backgroundColor: "gray",
   },
   headerText: {
     justifyContent: "center",

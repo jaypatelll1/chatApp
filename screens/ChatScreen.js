@@ -1,46 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  View,
-  Dimensions,
-  StyleSheet,
-} from "react-native";
-import {
-  Bubble,
-  GiftedChat,
-  Send,
-  InputToolbar,
-  Composer,
-} from "react-native-gifted-chat";
+import { View, Dimensions, StyleSheet } from "react-native";
+import { Bubble, GiftedChat, Send, InputToolbar, Composer } from "react-native-gifted-chat";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { getRoomId } from "../utils/common";
-import {
-  Timestamp,
-  setDoc,
-  doc,
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { Timestamp, setDoc, doc, collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
+import ChatHeader from "../components/ChatHeader"; 
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const ChatScreen = ({ route }) => {
+const ChatScreen = ({ route, navigation }) => {
   const userInfo = useSelector((state) => state.auth.userInfo.providerData.uid);
-  console.log("UID:", userInfo);
+  const userAvatar = useSelector((state) => state.auth.userInfo.providerData.avatar); // Assuming you have avatar URL in Redux
   const { user } = route.params;
-  console.log("Second User: ", user.uid);
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
 
   const createRoomIfNotExists = async () => {
     let roomId = getRoomId(userInfo, user.uid);
-    console.log("RoomId: ", roomId);
     await setDoc(doc(db, "rooms", roomId), {
       roomId,
       createdAt: Timestamp.fromDate(new Date()),
@@ -62,10 +42,11 @@ const ChatScreen = ({ route }) => {
           createdAt: data.createdAt.toDate(),
           user: {
             _id: data.userId,
+            avatar: data.userId === userInfo ? userAvatar : user.avatar, // Assuming `user.avatar` contains the URL of the receiver's image
           },
         };
       });
-      setMessages(allMessages);
+      setMessages(allMessages.reverse());
     });
     return unsub;
   }, []);
@@ -133,7 +114,7 @@ const ChatScreen = ({ route }) => {
         wrapperStyle={{
           right: {
             backgroundColor: "#9DB2FD",
-            borderRadius: 50,
+            borderRadius: 20,
             marginBottom: 5,
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
@@ -144,7 +125,7 @@ const ChatScreen = ({ route }) => {
           },
           left: {
             backgroundColor: "#E0E7FD",
-            borderRadius: 50,
+            borderRadius: 20,
             marginBottom: 5,
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
@@ -189,27 +170,30 @@ const ChatScreen = ({ route }) => {
     return <Composer {...props} textInputStyle={styles.customComposer} />;
   };
 
-  console.log("Messages: ", messages);
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
-    <>
-      <View style={[styles.container, { backgroundColor: "#FFFFFF" }]}>
-        <GiftedChat
-          renderComposer={renderComposer}
-          messages={messages}
-          onInputTextChanged={handleInputTextChanged}
-          onSend={(messages) => onSend(messages)}
-          user={{
-            _id: userInfo,
-          }}
-          renderBubble={renderBubble}
-          alwaysShowSend
-          renderSend={renderSend}
-          scrollToBottom
-          scrollToBottomComponent={scrollToBottomComponent}
-          renderInputToolbar={CustomInputToolbar}
-        />
-      </View>
-    </>
+    <View style={[styles.container, { backgroundColor: "#FFFFFF" }]}>
+      <ChatHeader user={user} onBackPress={handleBackPress} /> 
+      <GiftedChat
+        renderComposer={renderComposer}
+        messages={messages}
+        onInputTextChanged={handleInputTextChanged}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: userInfo,
+          avatar: userAvatar, // Add avatar URL for the current user
+        }}
+        renderBubble={renderBubble}
+        alwaysShowSend
+        renderSend={renderSend}
+        scrollToBottom
+        scrollToBottomComponent={scrollToBottomComponent}
+        renderInputToolbar={CustomInputToolbar}
+      />
+    </View>
   );
 };
 

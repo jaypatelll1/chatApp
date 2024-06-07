@@ -7,7 +7,6 @@ import {
   Image,
   Text,
   StyleSheet,
-  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -40,7 +39,6 @@ const Home = () => {
   }, []);
 
   const handleUserPress = (user) => {
-    // Handle user press and navigate to chat screen
     navigation.navigate("ChatScreen", { user });
   };
 
