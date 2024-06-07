@@ -1,6 +1,5 @@
 import React from "react";
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState } from "react";
 import {
   View,
   FlatList,
@@ -9,35 +8,31 @@ import {
   Text,
   StyleSheet,
   TextInput,
-
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
-
-const gettingdata = async () => {
-const querySnapshot = await getDocs(collection(db, 'users'));
-querySnapshot.forEach((doc) => {
-  console.log(doc.id, " => ", doc.data());
-});
-}
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
   const [search, onSearchText] = useState();
   const [users, setUsers] = useState([]);
+  const [Uid, setUid] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      const usersArray = querySnapshot.docs.map(doc => ({
+      const currentUser = JSON.parse(await AsyncStorage.getItem("userInfo"));
+      setUid(currentUser.providerData.uid);
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const usersArray = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         username: doc.data().fullName,
         avatar: doc.data().providerData.photoURL,
         lastMessage: "", // You need to define where the lastMessage is coming from
+        uid: doc.data().providerData.uid,
       }));
       setUsers(usersArray);
-      
     };
 
     fetchUsers();
@@ -49,18 +44,24 @@ const Home = () => {
   };
 
   const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => handleUserPress(item)}
-        style={styles.itemContainer}
-      >
-        <Image source={item.avatar} style={styles.avatar} />
-        <View>
-          <Text style={styles.username}>{item.username}</Text>
-          <Text style={styles.lastMessage}>{item.lastMessage}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+    console.log(item);
+
+    if (item.uid !== Uid) {
+      return (
+        <TouchableOpacity
+          onPress={() => handleUserPress(item)}
+          style={styles.itemContainer}
+        >
+          <Image source={item.avatar} style={styles.avatar} />
+          <View>
+            <Text style={styles.username}>{item.username}</Text>
+            <Text style={styles.lastMessage}>{item.lastMessage}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    } else {
+      return null; // Do not render current user's information
+    }
   };
 
   return (
@@ -83,7 +84,7 @@ const Home = () => {
 
         <TouchableOpacity style={styles.setting}>
           <Image
-            source={require("../assets/setting-icon.png")} 
+            source={require("../assets/setting-icon.png")}
             style={styles.settingimg}
           />
         </TouchableOpacity>
@@ -94,9 +95,7 @@ const Home = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-       
     </View>
-    
   );
 };
 
@@ -107,10 +106,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: "lightgray",
-    borderRadius:35,
-    backgroundColor:"#E9EEFF",
-    marginHorizontal:"3%",
-    marginBottom:"5%"
+    borderRadius: 35,
+    backgroundColor: "#E9EEFF",
+    marginHorizontal: "3%",
+    marginBottom: "5%",
   },
   avatar: {
     width: 50,
@@ -127,8 +126,8 @@ const styles = StyleSheet.create({
   },
   topbar: {
     flexDirection: "row",
-    width:"100%",
-    marginBottom:"3%"
+    width: "100%",
+    marginBottom: "3%",
   },
   searchBar: {
     height: 50,
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
   settingimg: {
     height: 25,
     width: 25,
-    right:4
+    right: 4,
   },
 });
 
