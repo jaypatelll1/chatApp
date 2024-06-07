@@ -46,7 +46,7 @@ const ChatScreen = ({ route, navigation }) => {
           },
         };
       });
-      setMessages(allMessages.reverse());
+      setMessages(allMessages);
     });
     return unsub;
   }, []);
