@@ -1,14 +1,12 @@
-import { AuthProvider } from "./context/AuthContext";
-import AppNav from "./Navigation/AppNav";
 import React from "react";
 import "react-native-gesture-handler";
-
-
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import AppNav from "./Navigation/AppNav";
 export default function App() {
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <AppNav />
-    </AuthProvider>
- 
+    </Provider>
   );
 }

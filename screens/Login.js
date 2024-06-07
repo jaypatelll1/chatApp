@@ -7,17 +7,19 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "../context/AuthContext";
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserToken, setUserInfo } from '../redux/authSlice';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const navigation = useNavigation();
-  const { userToken, setUserToken ,setUserInfo } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const userToken = useSelector(state => state.auth.userToken);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,21 +27,25 @@ export default function Login() {
     navigation.navigate("Signup");
   };
 
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const token = userCredential.user.stsTokenManager.accessToken;
+      dispatch(setUserToken(token));
+      await AsyncStorage.setItem('userToken', token);
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-          setUserToken(userCredential.user.stsTokenManager.accessToken);
-         if(userCredential){
-          getDoc(doc(db,'users',userCredential?.user.uid)).then((docSnap)=>
-          {
-            console.log(docSnap.data());
-          })
-         }
-      })
-      .catch((error) => console.log(error.message));
+      if (userCredential) {
+        const docSnap = await getDoc(doc(db, 'users', userCredential?.user.uid));
+        if (docSnap.exists()) {
+          const userInfo = docSnap.data();
+          dispatch(setUserInfo(userInfo));
+          await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-
 
   return (
     <View>
@@ -105,6 +111,7 @@ export default function Login() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   loginimg: {
     marginTop: 0,
@@ -112,14 +119,12 @@ const styles = StyleSheet.create({
     width: 400,
   },
   centerText: {
-    // flex:1,
     marginTop: "3%",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
   textbox: {
-    // flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -137,7 +142,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttons: {
-    // flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
     marginBottom: 0,
@@ -162,12 +166,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
   },
-
   bottomtext: {
     color: "#9DB2FD",
     fontWeight: "bold",
   },
-
   bottombuttontext: {
     color: "#647FDE",
     fontWeight: "bold",
