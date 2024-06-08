@@ -4,18 +4,18 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Image,
   Text,
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/AntDesign";
-import defaultImage from "../assets/profile-photo.jpg"
+import UserItem from "../components/UserItem";
+import { getRoomId } from "../utils/common";
+
 const Home = () => {
-  const [search, onSearchText] = useState();
   const [users, setUsers] = useState([]);
   const [Uid, setUid] = useState("");
   const navigation = useNavigation();
@@ -25,13 +25,29 @@ const Home = () => {
       const currentUser = JSON.parse(await AsyncStorage.getItem("userInfo"));
       setUid(currentUser.providerData.uid);
       const querySnapshot = await getDocs(collection(db, "users"));
-      const usersArray = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        username: doc.data().fullName,
-        avatar: doc.data().providerData.photoURL,
-        lastMessage: "", // You need to define where the lastMessage is coming from
-        uid: doc.data().providerData.uid,
-      }));
+      const usersArray = await Promise.all(
+        querySnapshot.docs.map(async (doc) => {
+          const userData = doc.data();
+          const roomId = getRoomId(currentUser.providerData.uid, userData.providerData.uid);
+          const lastMessageQuery = query(
+            collection(db, "rooms", roomId, "messages"),
+            orderBy("createdAt", "desc"),
+            limit(1)
+          );
+          const lastMessageSnapshot = await getDocs(lastMessageQuery);
+          const lastMessage = lastMessageSnapshot.docs.length > 0
+            ? lastMessageSnapshot.docs[0].data().text
+            : "";
+          
+          return {
+            id: doc.id,
+            username: userData.fullName,
+            avatar: userData.providerData.photoURL,
+            lastMessage,
+            uid: userData.providerData.uid,
+          };
+        })
+      );
       setUsers(usersArray);
     };
 
@@ -42,34 +58,10 @@ const Home = () => {
     navigation.navigate("ChatScreen", { user });
   };
 
-  const renderItem = ({ item }) => {
-    console.log(item);
-
-    if (item.uid !== Uid) {
-      return (
-        <TouchableOpacity
-          onPress={() => handleUserPress(item)}
-          style={styles.itemContainer}
-        >
-          <Image
-            source={item.avatar ? { uri: item.avatar } : defaultImage}
-            style={styles.avatar}
-          />
-          <View>
-            <Text style={styles.username}>{item.username}</Text>
-            <Text style={styles.lastMessage}>{item.lastMessage}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-    } else {
-      return null; // Do not render current user's information
-    }
-  };
-  
   return (
     <View>
       <View style={styles.topbar}>
-      <TouchableOpacity style={styles.searchicon}>
+        <TouchableOpacity style={styles.searchicon}>
           <Icon name="search1" color="black" size={30} />
         </TouchableOpacity>
         <View>
@@ -79,13 +71,17 @@ const Home = () => {
         <TouchableOpacity style={styles.settingicon}>
           <Icon name="setting" color="black" size={30} />
         </TouchableOpacity>
-       
-  
       </View>
 
       <FlatList
         data={users}
-        renderItem={renderItem}
+        renderItem={({ item }) => (
+          <UserItem
+            item={item}
+            handleUserPress={handleUserPress}
+            currentUserUid={Uid}
+          />
+        )}
         keyExtractor={(item) => item.id.toString()}
       />
     </View>
@@ -93,26 +89,6 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    marginHorizontal: "3%",
-    marginBottom: "1%",
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  username: {
-    fontSize: 20,
-    fontWeight: "500",
-  },
-  lastMessage: {
-    color: "gray",
-  },
   topbar: {
     flexDirection: "row",
     width: "100%",
@@ -131,11 +107,6 @@ const styles = StyleSheet.create({
   settingicon: {
     marginTop: 23,
     marginRight: 20,
-  },
-  settingimg: {
-    height: 25,
-    width: 25,
-    right: 4,
   },
 });
 

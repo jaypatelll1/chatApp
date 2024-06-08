@@ -98,9 +98,9 @@ const ChatScreen = ({ route, navigation }) => {
         >
           <MaterialCommunityIcons
             name="send"
-            style={{ marginLeft: -40, marginTop: 6 }}
+            style={{ marginLeft: 10, marginTop: 6 }}
             size={30}
-            color="#000"
+            color="#9DB2FD"
           />
         </View>
       </Send>
@@ -184,7 +184,7 @@ const ChatScreen = ({ route, navigation }) => {
         onSend={(messages) => onSend(messages)}
         user={{
           _id: userInfo,
-          avatar: userAvatar, // Add avatar URL for the current user
+          avatar: userAvatar, 
         }}
         renderBubble={renderBubble}
         alwaysShowSend
@@ -205,18 +205,19 @@ const styles = StyleSheet.create({
   },
   customInputToolbar: {
     flex: 1,
-    width: "183%",
+    width: "160%",
     paddingHorizontal: 0,
     borderTopWidth: 0,
     backgroundColor: "transparent",
     marginBottom: 7,
+    
   },
   customComposer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: "row",
     borderWidth: 0.1,
-    borderRadius: 20,
+    borderRadius: 3,
     backgroundColor: "#ffffff",
   },
 });
