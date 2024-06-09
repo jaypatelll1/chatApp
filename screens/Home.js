@@ -7,7 +7,7 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,7 +38,7 @@ const Home = () => {
           const lastMessage = lastMessageSnapshot.docs.length > 0
             ? lastMessageSnapshot.docs[0].data().text
             : "";
-          
+
           return {
             id: doc.id,
             username: userData.fullName,
@@ -58,6 +58,10 @@ const Home = () => {
     navigation.navigate("ChatScreen", { user });
   };
 
+  const handleSettingsPress = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
+
   return (
     <View>
       <View style={styles.topbar}>
@@ -67,8 +71,7 @@ const Home = () => {
         <View>
           <Text style={styles.topText}>Chats</Text>
         </View>
-
-        <TouchableOpacity style={styles.settingicon}>
+        <TouchableOpacity style={styles.settingicon} onPress={handleSettingsPress}>
           <Icon name="setting" color="black" size={30} />
         </TouchableOpacity>
       </View>
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     marginBottom: "3%",
+    marginTop: "6%",
     justifyContent: "space-between",
   },
   searchicon: {

@@ -12,6 +12,10 @@ export default function AboutUs() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Image
+            style={{
+              width: "100%",
+              height: 300,
+            }}
             source={require("../assets/Aboutus.jpg")}
           />
         </View>
@@ -35,13 +39,32 @@ export default function AboutUs() {
               alignContent: "space-around"
             }}
           >
-            About Us Jay, Mihir, and Dev joined forces to create a chat app on
+            Jay, Mihir, and Dev joined forces to create a chat app on
             React Native. Our mission is simple yet profound: to bring people
             closer, no matter the distance. Through genuine conversations and
             heartfelt connections, we aim to inspire bonds that transcend
             boundaries. Join us on this journey of shared moments and endless
-            possibilities. Welcome to our chat app. With love, Jay, Mihir, and
-            Dev
+            possibilities. Welcome to our chat app.
+          </Text>
+          <Text
+            style={{
+              color: "#4876BC",
+              fontSize: 12,
+              fontWeight: "bold",
+              alignContent: "flex-end"
+            }}
+          >
+            With love,
+          </Text>
+          <Text
+            style={{
+              color: "#4876BC",
+              fontSize: 12,
+              fontWeight: "bold",
+              alignContent: "space-around"
+            }}
+          >
+            Jay, Mihir and Dev
           </Text>
         </View>
       </ScrollView>
